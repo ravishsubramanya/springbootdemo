@@ -3,6 +3,7 @@ package co.tracert.demo;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -58,10 +59,11 @@ public class DemoApplicationTests {
 	@Test
 	public void sampleTestCase() {
 		repository.save(Profile.getDefault());
+		Profile profile = repository.save(Profile.getDefault());
+		System.out.println("profile saved - " + profile);
+		Optional<Profile> result = (Optional<Profile>) repository.findById(profile.getId());
 
-		List<Profile> result = (List<Profile>) repository.findAll();
-
-		assertTrue("Not empty", result.size() > 0);
-		assertTrue("Contains item with expected NAME", result.get(0).getFirstName().equals(EXPECTED_NAME));
+		assertTrue("Not empty", result != null);
+		assertTrue("Contains item with expected NAME", result.get().getFirstName().equals(EXPECTED_NAME));
 	}
 }

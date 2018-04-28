@@ -22,4 +22,10 @@ public class StartController {
 		List<Profile> result = (List<Profile>) repository.findAll();
 		return (result != null && result.size() > 0) ? result.get(0) : null;
 	}
+
+	@GetMapping("/profile/all")
+	public List<Profile> getAllProfiles() {
+		List<Profile> result = (List<Profile>) repository.findAll();
+		return (result != null && result.size() > 0) ? result : null;
+	}
 }
