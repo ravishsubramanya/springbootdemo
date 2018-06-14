@@ -4,14 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.tracert.demo.data.repositories.ProfileInfoRepository;
 import co.tracert.demo.model.Profile;
 
 @RestController
-@RequestMapping("/demo")
 public class StartController {
 
 	@Autowired
@@ -27,5 +25,10 @@ public class StartController {
 	public List<Profile> getAllProfiles() {
 		List<Profile> result = (List<Profile>) repository.findAll();
 		return (result != null && result.size() > 0) ? result : null;
+	}
+
+	@GetMapping("/")
+	public Profile getDummyData() {
+		return Profile.getDefault();
 	}
 }
