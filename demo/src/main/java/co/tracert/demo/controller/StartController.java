@@ -1,5 +1,6 @@
 package co.tracert.demo.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,13 @@ public class StartController {
 
 	@GetMapping("/profile/all")
 	public List<Profile> getAllProfiles() {
-		List<Profile> result = (List<Profile>) repository.findAll();
-		return (result != null && result.size() > 0) ? result : null;
+		/*
+		 * List<Profile> result = (List<Profile>) repository.findAll(); return (result
+		 * != null && result.size() > 0) ? result : null;
+		 */
+		List<Profile> profiles = new ArrayList<Profile>();
+		profiles.add(getDummyData());
+		return profiles;
 	}
 
 	@GetMapping("/")

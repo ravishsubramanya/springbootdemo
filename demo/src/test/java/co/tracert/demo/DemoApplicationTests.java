@@ -25,7 +25,7 @@ import co.tracert.demo.data.repositories.ProfileInfoRepository;
 import co.tracert.demo.model.Profile;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = DemoApplication.class)
+@SpringBootTest(classes = TracertApplication.class)
 @WebAppConfiguration
 @ActiveProfiles("local")
 @TestPropertySource(properties = { "amazon.dynamodb.endpoint=http://localhost:8000/", "amazon.aws.accesskey=key",
