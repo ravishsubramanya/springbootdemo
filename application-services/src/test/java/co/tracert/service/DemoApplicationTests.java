@@ -1,4 +1,4 @@
-package co.tracert.demo;
+package co.tracert.service;
 
 import static org.junit.Assert.assertTrue;
 
