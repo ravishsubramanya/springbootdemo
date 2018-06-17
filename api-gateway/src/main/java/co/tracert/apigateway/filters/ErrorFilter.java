@@ -1,4 +1,4 @@
-package com.example.springbootzuulgatwayproxy.filters;
+package co.tracert.apigateway.filters;
 
 import com.netflix.zuul.ZuulFilter;
 

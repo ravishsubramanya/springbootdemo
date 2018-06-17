@@ -1,4 +1,4 @@
-package co.tracert.demo;
+package co.tracert.service;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

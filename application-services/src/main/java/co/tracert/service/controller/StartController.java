@@ -1,4 +1,4 @@
-package co.tracert.demo.controller;
+package co.tracert.service.controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import co.tracert.demo.data.repositories.ProfileInfoRepository;
-import co.tracert.demo.model.Profile;
+import co.tracert.service.data.repositories.ProfileInfoRepository;
+import co.tracert.service.model.Profile;
 
 @RestController
 public class StartController {

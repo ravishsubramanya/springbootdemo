@@ -1,4 +1,4 @@
-package co.tracert.demo.model;
+package co.tracert.service.model;
 
 import java.io.File;
 import java.text.ParseException;

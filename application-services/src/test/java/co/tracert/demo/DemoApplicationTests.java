@@ -21,8 +21,9 @@ import com.amazonaws.services.dynamodbv2.model.CreateTableRequest;
 import com.amazonaws.services.dynamodbv2.model.DeleteTableRequest;
 import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughput;
 
-import co.tracert.demo.data.repositories.ProfileInfoRepository;
-import co.tracert.demo.model.Profile;
+import co.tracert.service.TracertApplication;
+import co.tracert.service.data.repositories.ProfileInfoRepository;
+import co.tracert.service.model.Profile;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = TracertApplication.class)
