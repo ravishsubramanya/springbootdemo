@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class TracertApplication {
 
 	public static void main(String[] args) {
-		System.out.println("starting tracert application....");
+		System.out.println("starting tracert-services application....");
 		SpringApplication.run(TracertApplication.class, args);
 	}
 }
