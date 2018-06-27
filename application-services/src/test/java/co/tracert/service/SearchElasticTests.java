@@ -13,11 +13,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class SearchElasticTests {
 
 	@Test
-	public void givenDirectSearchRequestForWindowEvent_thenResponseCodeIs200() {
-		given().when().get("http://localhost:8090/tracert/search/windowevent/first").then().statusCode(200);
-	}
-
-	@Test
 	public void givenDirectSearchRequestForWindowEvent_thenResponseIsNotNull() {
 		given().when().get("http://localhost:8090/tracert/search/windowevent/first").then()
 				.body("hits.total", greaterThan(0)).statusCode(200);
