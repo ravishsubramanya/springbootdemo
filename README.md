@@ -1,5 +1,5 @@
 # tracert
-- It is a **Spring Boot application** 
-- Exposes Rest endpoints that retrieves data from a DynamoDB local instance 
-- Builds a Docker image using docker maven plugin from spotify 
+- A **Spring Boot application** that is fronted by a **Zuul** api gateway with service discovery by **Eureka** server
+- Exposes Rest endpoints that retrieves data from a local **Elasticsearch** instance 
+- Integration tests using rest-assured
 - Swagger documentation for the APIs
