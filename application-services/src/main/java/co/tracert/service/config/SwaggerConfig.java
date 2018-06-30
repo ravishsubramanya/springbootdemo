@@ -1,4 +1,4 @@
-package co.tracert.service.init;
+package co.tracert.service.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -4,7 +4,12 @@ package co.tracert.service.model;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.validation.Valid;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
+
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -12,10 +17,12 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+@Document(indexName = "winlogbeat-6.3.0-2018.06.22", type = "doc")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({ "took", "timed_out", "num_reduce_phases", "_shards", "hits" })
 public class WindowEvent implements Serializable {
 
+	@Id
 	@JsonProperty("took")
 	private int took;
 	@JsonProperty("timed_out")
