@@ -15,14 +15,21 @@ public class SearchElasticTests {
 
 	@Test
 	public void givenDirectSearchRequestForWindowEvent_thenResponseIsNotNull() {
-		given().when().get("http://localhost:8090/tracert/search/windowevent/first").then()
+		given().when().get("http://localhost:8090/tracert/windowevent/using-rest/first").then()
 				.body("hits.total", greaterThan(0)).statusCode(200);
 	}
 
 	@Test
-	public void givenSearchRequestBySourceIdForWindowEvent_thenResponseIsOK() {
-		given().when().get("http://localhost:8090/tracert/windowevent/id/FOhkLmQByi6O4NBFINZ5").then().statusCode(200)
-				.body("message", containsString(
+	public void givenfindBySourceIdUsingGetRequest_thenResponseIsOK() {
+		given().when().get("http://localhost:8090/tracert/windowevent/using-getrequest/id/FOhkLmQByi6O4NBFINZ5").then()
+				.statusCode(200).body("message", containsString(
+						"The operating system started at system time ‎2017‎-‎11‎-‎17T20:21:19.495211900Z."));
+	}
+
+	@Test
+	public void givenfindBySourceIdUsingSearchRequest_thenResponseIsOK() {
+		given().when().get("http://localhost:8090/tracert/windowevent/using-searchrequest/id/FOhkLmQByi6O4NBFINZ5")
+				.then().statusCode(200).body("message", containsString(
 						"The operating system started at system time ‎2017‎-‎11‎-‎17T20:21:19.495211900Z."));
 	}
 

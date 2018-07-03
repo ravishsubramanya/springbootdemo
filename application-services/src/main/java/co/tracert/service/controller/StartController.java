@@ -12,9 +12,17 @@ import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
 import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.get.GetResponse;
+import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.sort.ScoreSortBuilder;
+import org.elasticsearch.search.sort.SortOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -46,7 +54,7 @@ public class StartController {
 		return profiles;
 	}
 
-	@GetMapping("/search/windowevent/first")
+	@GetMapping("/windowevent/using-rest/first")
 	public WindowEvent first() {
 		String resourceUrl = "http://localhost:9200/winlogbeat*/_search?size=1&q=*:*";
 		RestTemplate restTemplate = new RestTemplate();
@@ -54,8 +62,8 @@ public class StartController {
 		return restTemplate.exchange(resourceUrl, HttpMethod.GET, null, WindowEvent.class).getBody();
 	}
 
-	@GetMapping("/windowevent/id/{doc_id}")
-	public Source findEventByDocId(@PathVariable("doc_id") String doc_id) {
+	@GetMapping("/windowevent/using-getrequest/id/{doc_id}")
+	public Source findEventByDocIdUsingGetRequest(@PathVariable("doc_id") String doc_id) {
 
 		logger.info("doc id to search - " + doc_id);
 		RestHighLevelClient client = null;
@@ -72,6 +80,7 @@ public class StartController {
 							return httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider);
 						}
 					});
+
 			client = new RestHighLevelClient(builder);
 			GetRequest request = new GetRequest("winlogbeat-6.3.0-2017.11.17", "doc", doc_id);
 			if (client.exists(request)) {
@@ -80,6 +89,63 @@ public class StartController {
 				logger.info(response.getSourceAsString());
 				source = gson.fromJson(response.getSourceAsString(), Source.class);
 			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				client.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return source;
+	}
+
+	@GetMapping("/windowevent/using-searchrequest/id/{doc_id}")
+	public Source findEventByDocIdUsingSearchRequest(@PathVariable("doc_id") String doc_id) {
+
+		logger.info("doc id to search - " + doc_id);
+		RestHighLevelClient client = null;
+		Source source = null;
+
+		try {
+			final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+			credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials("elastic", elasticPwd));
+
+			RestClientBuilder builder = RestClient.builder(new HttpHost("localhost", 9200, "http"))
+					.setHttpClientConfigCallback(new RestClientBuilder.HttpClientConfigCallback() {
+						@Override
+						public HttpAsyncClientBuilder customizeHttpClient(HttpAsyncClientBuilder httpClientBuilder) {
+							return httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider);
+						}
+					});
+
+			client = new RestHighLevelClient(builder);
+
+			QueryBuilder matchQueryBuilder = QueryBuilders.matchQuery("_id", doc_id);
+			SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+			searchSourceBuilder.sort(new ScoreSortBuilder().order(SortOrder.DESC));
+			searchSourceBuilder.query(matchQueryBuilder);
+
+			SearchRequest searchRequest = new SearchRequest("winlogbeat-6.3.0-2017.11.17");
+			searchRequest.source(searchSourceBuilder);
+
+			Gson gson = new Gson();
+			SearchResponse searchResponse = client.search(searchRequest);
+
+			SearchHit[] results = searchResponse.getHits().getHits();
+			for (SearchHit hit : results) {
+				source = gson.fromJson(hit.getSourceAsString(), Source.class);
+				logger.info("response status - " + searchResponse.status().getStatus());
+				logger.info("response time - " + searchResponse.getTook());
+				logger.info("response total shards - " + searchResponse.getTotalShards());
+				logger.info("response success shards - " + searchResponse.getSuccessfulShards());
+				logger.info("response failed shards - " + searchResponse.getFailedShards());
+				logger.info("response total hits - " + searchResponse.getHits().getTotalHits());
+			}
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
